@@ -125,7 +125,7 @@ class _QuadTree(object):
     user-friendly version.
     """
 
-    def __init__(self, x, y, width, height, max_items, max_depth, _depth=0):
+    def __init__(self, x, y, width, height, max_items, max_depth, _depth=0, fid=0):
         self.nodes = []
         self.children = []
         self.center = (x, y)
@@ -133,6 +133,7 @@ class _QuadTree(object):
         self.max_items = max_items
         self.max_depth = max_depth
         self._depth = _depth
+        self.fid = fid
 
     def __iter__(self):
         for child in _loopallchildren(self):
@@ -233,13 +234,13 @@ class _QuadTree(object):
         y2 = self.center[1] + quartheight
         new_depth = self._depth + 1
         self.children = [_QuadTree(x1, y1, halfwidth, halfheight,
-                                   self.max_items, self.max_depth, new_depth),
+                                   self.max_items, self.max_depth, new_depth, f'{self.fid}3'),
                          _QuadTree(x1, y2, halfwidth, halfheight,
-                                   self.max_items, self.max_depth, new_depth),
+                                   self.max_items, self.max_depth, new_depth, f'{self.fid}0'),
                          _QuadTree(x2, y1, halfwidth, halfheight,
-                                   self.max_items, self.max_depth, new_depth),
+                                   self.max_items, self.max_depth, new_depth, f'{self.fid}2'),
                          _QuadTree(x2, y2, halfwidth, halfheight,
-                                   self.max_items, self.max_depth, new_depth)]
+                                   self.max_items, self.max_depth, new_depth, f'{self.fid}1')]
         nodes = self.nodes
         self.nodes = []
         for node in nodes:
